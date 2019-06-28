@@ -13,27 +13,43 @@ import { LocalNotifications } from '@ionic-native/local-notifications';
 export class HomePage {
 
   
-  //--------button1--------//
-  bgColor1:string = "light";
-  sButton1:boolean;
-  icColor1:string = "dark";
-  //--------button2--------//
-  bgColor2:string = "light";
-  sButton2:boolean;
-  icColor2:string = "dark";
-  //--------button3--------//
-  bgColor3:string = "light";
-  sButton3:boolean;
-  icColor3:string = "dark";
+ 
 
   statusled:FirebaseListObservable<models[]>
   statussensorMQ2:FirebaseListObservable<models[]>
   statussensorDHT22:FirebaseListObservable<models[]>
 
+   //--------button1--------//
+   bgColor1:string = "light";
+   sButton1:boolean;
+   icColor1:string = "dark";
+   //--------button2--------//
+   bgColor2:string = "light";
+   sButton2:boolean;
+   icColor2:string = "dark";
+   //--------button3--------//
+   bgColor3:string = "light";
+   sButton3:boolean;
+   icColor3:string = "dark";
+
+  // //--------button1--------//
+  // bgColor1:string = "light";
+  // sButton1:boolean;
+  // icColor1:string = "dark";
+  // //--------button2--------//
+  // bgColor2:string = "light";
+  // sButton2:boolean;
+  // icColor2:string = "dark";
+  // //--------button3--------//
+  // bgColor3:string = "light";
+  // sButton3:boolean;
+  // icColor3:string = "dark";
+
   led:models[];
   sensormq2:models[];
   sensordht22:models[];
 
+  
 
   sensorDHT22:any;   //show in html
   sensorMQ2:any;    //show in html
@@ -48,111 +64,104 @@ export class HomePage {
   data:string;
 
 
-  constructor(public navCtrl: NavController,
-              private datafire:AngularFireDatabase,
-              private localNotifications:LocalNotifications,
-              private platform:Platform,
-              private alertCrt:AlertController) {
+  constructor(public navCtrl: NavController,  private datafire:AngularFireDatabase, private localNotifications:LocalNotifications,
+              private platform:Platform, private alertCrt:AlertController) {
 
-    this.statusled = datafire.list('home/led');
-    this.statussensorMQ2 = datafire.list('home/sensor/mq2');
-    this.statussensorDHT22 = datafire.list('home/sensor/dht22');
+      this.statusled = datafire.list('home/led');
+      this.statussensorMQ2 = datafire.list('home/sensor/mq2');
+      this.statussensorDHT22 = datafire.list('home/sensor/dht22');
+      console.log("constructor");
+      this.statusled.subscribe((Item)=>{
+        this.led = Item;
+        console.log("Data LED stastus :", this.led);
+        this.initialButtonState(this.led);
+      });
+      console.log("................////////////// DHT22 ////////////////////....................");   
+      this.statussensorDHT22.subscribe((Item) =>{
+        this.sensordht22 = Item;
+        this.sensorValuetem = this.setsensorValueDHT22(this.sensordht22)
 
-   console.log(".....................................");            
-    this.statusled.subscribe((Item)=>{
-      this.led = Item;
-      console.log("Data LED stastus :",this.led);
-      this.initialButtonState(this.led);
-    });
-    console.log("................////////////// DHT22 ////////////////////....................");   
-    this.statussensorDHT22.subscribe((Item) =>{
-      this.sensordht22 = Item;
-      //console.log("Data DHT22 sensor status :",this.sensordht22);
-      this.sensorValuetem = this.setsensorValueDHT22(this.sensordht22)
+        if(this.sensorValuetem > 70){
+          if(this.statusIndex == 0){
+            console.log(" -------------- first loop ---------------");
+            if(this.statusAlert == 1){ 
+              this.statusAlert = 0; 
+              this.statusIndex = 1;
+              console.log("------- flag statusAlert  in if ------",this.statusAlert);  
 
-      if(this.sensorValuetem > 70){
-        if(this.statusIndex == 0){
-          console.log(" -------------- first loop ---------------");
-          if(this.statusAlert == 1){ 
-            this.statusAlert = 0; 
-            this.statusIndex = 1;
+              let date = new Date(new Date().getTime()+1000);
+              console.log(" -------------- time of first loop ---",date);
+              this.notificationTem(date); 
+              console.log("------- first loop 111111 ------");
+            }else{
+              console.log("------- else flag ------")
+            }
+          }else{
+            console.log(" -------------- second loop ---------------");
+            if(this.statusAlert == 1){ 
+              this.statusAlert = 0; 
+              this.statusIndex = 1;
             console.log("------- flag statusAlert  in if ------",this.statusAlert);  
 
-            let date = new Date(new Date().getTime()+1000);
-            console.log(" -------------- time of first loop ---",date);
-            this.notificationTem(date); 
-            console.log("------- first loop 111111 ------");
-          }else{
-            console.log("------- else flag ------")
-          }
+              let date = new Date(new Date().getTime()+1000);
+              console.log(" -------------- time of second loop ---",date);
+              this.notificationTem(date); 
+              console.log("------- first loop 111111 ------");
+            }else{
+              console.log("------- else flag ------")
+            }
+          }           
         }else{
-          console.log(" -------------- second loop ---------------");
-          if(this.statusAlert == 1){ 
-            this.statusAlert = 0; 
-            this.statusIndex = 1;
-          console.log("------- flag statusAlert  in if ------",this.statusAlert);  
+          this.statusIndex = 0; 
+          console.log("------- else loop ------");
+        }
+      }); 
 
-            let date = new Date(new Date().getTime()+1000);
-            console.log(" -------------- time of second loop ---",date);
-            this.notificationTem(date); 
-            console.log("------- first loop 111111 ------");
-          }else{
-            console.log("------- else flag ------")
-          }
-          
-        }           
-}else{
-  this.statusIndex = 0; 
-  console.log("------- else loop ------");
-}
-    }); 
+      console.log("................./////////////// MQ-2 ////////////////////...................");
+      this.statussensorMQ2.subscribe((Item)=>{
+        this.sensormq2 = Item;
+        this.sensorValueMQ = this.setsensorValueMQ2(this.sensormq2);
+          console.log("------- Status value statusAlert out if ------", this.statusAlert);
+          console.log("------- flag status index ------", this.statusIndex);  
+          console.log("------- flag statusAlert ------", this.statusAlert);
+            if(this.sensorValueMQ > 750){
+                  if(this.statusIndex == 0){
+                    console.log(" -------------- first loop ---------------");
+                    if(this.statusAlert == 1){ 
+                      this.statusAlert = 0; 
+                      this.statusIndex = 1;//
+                    console.log("------- flag statusAlert  in if ------", this.statusAlert);  
 
-    console.log("................./////////////// MQ-2 ////////////////////...................");
-    this.statussensorMQ2.subscribe((Item)=>{
-      this.sensormq2 = Item;
-      //console.log("Data MQ-2 sensor status :",this.sensormq2);
-      this.sensorValueMQ = this.setsensorValueMQ2(this.sensormq2);
-        console.log("------- Status value statusAlert out if ------", this.statusAlert);
-        console.log("------- flag status index ------", this.statusIndex);  
-        console.log("------- flag statusAlert ------", this.statusAlert);
-          if(this.sensorValueMQ > 750){
-                if(this.statusIndex == 0){
-                  console.log(" -------------- first loop ---------------");
-                  if(this.statusAlert == 1){ 
-                    this.statusAlert = 0; 
-                    this.statusIndex = 1;//
-                  console.log("------- flag statusAlert  in if ------", this.statusAlert);  
-
-                    let date = new Date(new Date().getTime()+1000);
-                    console.log(" -------------- time of first loop ---",date);
-                    this.notification(date); 
-                    console.log("------- first loop 111111 ------");
+                      let date = new Date(new Date().getTime()+1000);
+                      console.log(" -------------- time of first loop ---",date);
+                      this.notification(date); 
+                      console.log("------- first loop 111111 ------");
+                    }else{
+                      console.log("------- else flag ------")
+                    }
                   }else{
-                    console.log("------- else flag ------")
-                  }
-                }else{
-                  console.log(" -------------- second loop ---------------");
-                  if(this.statusAlert == 1){ 
-                    this.statusAlert = 0;
-                    this.statusIndex = 1;
-                  console.log("------- flag statusAlert  in if ------", this.statusAlert);  
+                    console.log(" -------------- second loop ---------------");
+                    if(this.statusAlert == 1){ 
+                      this.statusAlert = 0;
+                      this.statusIndex = 1;
+                    console.log("------- flag statusAlert  in if ------", this.statusAlert);  
 
-                    let date = new Date(new Date().getTime()+10000);
-                    console.log(" -------------- time of second loop ---",date);
-                    this.notification(date); 
-                    console.log("------- first loop 111111 ------");
-                  }else{
-                    console.log("------- else flag ------")
-                  }
-                }           
-          }else{
-            this.statusIndex = 0; 
-            console.log("------- else loop ------");
-          }
-      })
-    console.log("........................................");
-  }// end constructor
-  setsensorValueDHT22(sen:any){
+                      let date = new Date(new Date().getTime()+10000);
+                      console.log(" -------------- time of second loop ---",date);
+                      this.notification(date); 
+                      console.log("------- first loop 111111 ------");
+                    }else{
+                      console.log("------- else flag ------")
+                    }
+                  }           
+            }else{
+              this.statusIndex = 0; 
+              console.log("------- else loop ------");
+            }
+        })
+      console.log("........................................");
+  } // end constructor
+  setsensorValueDHT22(sen:any) {
     console.log("Data to funtion: ",sen);
       for(let i = 0; i< sen.length;i++){
         console.log("in for of sensor DHT22 : ",i," ", sen[i].$key);
@@ -177,26 +186,31 @@ export class HomePage {
       }   
   }
   initialButtonState(btn:any){
+    console.log("function initial");
     for(let i=0;i<btn.length;i++){
       if(btn[i].$key=="d1"){
         if(btn[i].$value){
           this.sButton1 = true;
           this.bgColor1 = "primary";
           this.icColor1 = "light"; 
+          console.log("btn 1 initial true");
         }else{
           this.sButton1 = false;    
           this.bgColor1 = "light"
           this.icColor1 = "dark";
+          console.log("btn 1 initial false");
         }
       }else if(btn[i].$key=="d2"){
           if(btn[i].$value){
             this.sButton2 = true;
             this.bgColor2 = "primary";
             this.icColor2 = "light"; 
+            console.log("btn 2 initial true");
           }else{
             this.sButton2 = false;    
             this.bgColor2 = "light"
             this.icColor2 = "dark";
+            console.log("btn 2 initial false");
           }
       }else if(btn[i].$key=="d3"){
           if(btn[i].$value){
@@ -211,25 +225,27 @@ export class HomePage {
       } 
     }
   }
-  buttonClickLED1(btn:boolean){
+  buttonClickLED1(btn){
     let firebaseled = firebase.database().ref("home/led");
     if(btn){
       this.sButton1 = false;    
       this.bgColor1 = "primary";
       this.icColor1 = "light";
-      firebaseled.child("d1").set(btn);
+      //firebaseled.child("d1").set(btn);
+      console.log("btn1");
     }else{
       this.sButton1 = true;
       this.bgColor1 = "light"
       this.icColor1 = "dark";
-
-      firebaseled.child("d1").set(btn);
+      //firebaseled.child("d1").set(btn);
+      console.log("btn1", "else");
     }
-
+    console.log("btn1", "end-if");
+    console.log("........................................>>>");
   }
   buttonClickLED2(btn:boolean){
     let firebaseled = firebase.database().ref("home/led");
-    if(btn){
+    if(btn){ 
       this.sButton2 = false;    
       this.bgColor2 = "primary";
       this.icColor2 = "light";

@@ -10,30 +10,32 @@
 <ion-content class="head">
 
   <ion-row class="pt-3">
-      <ion-col class="pl-5 p-1">
+      <ion-col class="pl-5">
           <button class="btn1"  (click)="buttonClickLED1(sButton1)" size="large" ion-button large [color]="bgColor1" >
             <img  src="assets/imgs/bedroom.png">
           </button>
       </ion-col>
       <ion-col class="p-1">
-          <button class="btn2" style="border-radius:10px" (click)="buttonClickLED2(sButton2)" ion-button large [color]="bgColor2" >
+          <button class="btn2" (click)="buttonClickLED2(sButton2)" ion-button large [color]="bgColor2" >
             <img  style="padding-top:10px " src="assets/imgs/restroom.png">
           </button>
       </ion-col>
-      <ion-col class="pr-5 p-1">
-          <button class="btn3" style="border-radius:10px" (click)="buttonClickLED3(sButton3)" ion-button large [color]="bgColor3" >
+      <ion-col class="pr-5 ">
+          <button class="btn3" (click)="buttonClickLED3(sButton3)" ion-button large [color]="bgColor3" >
             <img  src="assets/imgs/kitchen.png">
           </button>
       </ion-col>
   </ion-row>
   <ion-row class="pt-3">
     <ion-col class="text-center">
-        <label>Air mass: {{ sensorMQ2 }}  PPM</label> 
+        <h3>Air mass</h3>
+        <label> {{ sensorMQ2 }}  PPM</label> 
     </ion-col>
   </ion-row>
   <ion-row class="pt-3">
       <ion-col class="text-center">
-        <label> Temperature: {{ sensorDHT22 }}  ํC</label>
+        <h3>Temperature</h3>
+        <label> {{ sensorDHT22 }}  ํC</label>
       </ion-col>
     </ion-row>
 
