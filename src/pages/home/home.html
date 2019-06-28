@@ -1,83 +1,68 @@
+
 <ion-header>
-  <ion-navbar>
-    <ion-title>
-      Security Home
-    </ion-title>
+  <ion-navbar class="text-center" >
+      <h2 class="pt-2" >Security Home</h2>
   </ion-navbar>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </ion-header>
 
 <ion-content class="head">
 
-  <ion-row class="pt-3">
-      <ion-col class="pl-5">
+  <ion-row class="pt-5 p-0 pl-5 pr-5">
+      <ion-col class="p-1">
           <button class="btn1"  (click)="buttonClickLED1(sButton1)" size="large" ion-button large [color]="bgColor1" >
-            <img  src="assets/imgs/bedroom.png">
+              <!-- <img  src="assets/imgs/bedroom.png"> -->
+              <img src="https://img.icons8.com/dotty/100/000000/undergo-insomnia.png">
           </button>
       </ion-col>
       <ion-col class="p-1">
           <button class="btn2" (click)="buttonClickLED2(sButton2)" ion-button large [color]="bgColor2" >
-            <img  style="padding-top:10px " src="assets/imgs/restroom.png">
+              <img style="border: aqua" src="https://img.icons8.com/dotty/100/000000/toilet-paper.png">  
+            <!-- <img  style="padding-top:10px " src="assets/imgs/restroom.png"> -->
           </button>
       </ion-col>
-      <ion-col class="pr-5 ">
+      <ion-col class="p-1">
           <button class="btn3" (click)="buttonClickLED3(sButton3)" ion-button large [color]="bgColor3" >
-            <img  src="assets/imgs/kitchen.png">
+              <img src="https://img.icons8.com/dotty/100/000000/tableware.png">
+            <!-- <img  src="assets/imgs/kitchen.png"> -->
           </button>
       </ion-col>
   </ion-row>
-  <ion-row class="pt-3">
+  <ion-row class="pt-5">
     <ion-col class="text-center">
-        <h3>Air mass</h3>
-        <label> {{ sensorMQ2 }}  PPM</label> 
+        <!-- <h3>Air mass</h3> -->
+              <!-- foregroundColor = "rgba(255, 150, 136, 1)" -->
+              <!-- <label> {{ sensorMQ2 }}  PPM</label>  -->
+        <div>
+            <ngx-gauge 
+              label="MQ2"  
+              [value]="sensorMQ2"
+              append = " %"
+              size = 180
+              thick = 10
+              cap = round
+              >
+            </ngx-gauge> 
+        </div>
     </ion-col>
   </ion-row>
-  <ion-row class="pt-3">
+  <ion-row class="pt-2">
       <ion-col class="text-center">
-        <h3>Temperature</h3>
-        <label> {{ sensorDHT22 }}  ํC</label>
+        <!-- <h3>Temperature</h3> -->
+        <!-- <label> {{ sensorDHT22 }}  ํC</label> -->
+        <div>
+            <ngx-gauge 
+              label="DHT22" 
+              [value]="sensorDHT22"
+              append = "  ํC"
+              size = 180
+              thick = 10
+              cap = round
+            >
+            </ngx-gauge> 
+        </div>
       </ion-col>
     </ion-row>
 
-  <!-- <div class= "row pt-4">
-    <div class="col-4 p-0 pl-5"> 
-      <button class="btn1" style="border-radius:10px" (click)="buttonClickLED1(sButton1)" size="large" ion-button large [color]="bgColor1" >
-        <img src="assets/imgs/bedroom.png">
-      </button>
-    </div>
-    <div class="col-4">
-      <button class="btn2" style="border-radius:10px" (click)="buttonClickLED2(sButton2)" ion-button large [color]="bgColor2" >
-        <img  src="assets/imgs/restroom.png">
-      </button>
-    </div>
-    <div class="col-4 p-0 pr-5">
-      <button class="btn3" style="border-radius:10px" (click)="buttonClickLED3(sButton3)" ion-button large [color]="bgColor3" >
-        <img  src="assets/imgs/kitchen.png">
-      </button>
-    </div>
-  </div> -->
-
-  <!-- <ion-list>
-    <p>
-      <button class="btn1" (click)="buttonClickLED1(sButton1)" ion-button large [color]="bgColor1" round>
-        <img style= "height: 50px " src="assets/imgs/bedroom.png">
-      </button>
-    </p>
-    <p>
-      <button class="btn2" (click)="buttonClickLED2(sButton2)" ion-button large [color]="bgColor2" round>
-      <img style= "height: 50px " src="assets/imgs/restroom.png">
-      </button>
-    </p>
-    <p>
-      <button class="btn3" (click)="buttonClickLED3(sButton3)" ion-button large [color]="bgColor3"  round>
-          <img style= "height: 50px " src="assets/imgs/kitchen.png">
-      </button>
-    </p>
-    <p>
-      Air mass: {{ sensorMQ2 }}  PPM
-    </p>
-    <p>
-      Temperature: {{ sensorDHT22 }}  ํC
-    </p>
-  </ion-list> -->
+ 
 </ion-content>

@@ -32,18 +32,6 @@ export class HomePage {
    sButton3:boolean;
    icColor3:string = "dark";
 
-  // //--------button1--------//
-  // bgColor1:string = "light";
-  // sButton1:boolean;
-  // icColor1:string = "dark";
-  // //--------button2--------//
-  // bgColor2:string = "light";
-  // sButton2:boolean;
-  // icColor2:string = "dark";
-  // //--------button3--------//
-  // bgColor3:string = "light";
-  // sButton3:boolean;
-  // icColor3:string = "dark";
 
   led:models[];
   sensormq2:models[];
@@ -178,13 +166,14 @@ export class HomePage {
       for(let i = 0; i< sen.length;i++){
         console.log("in for of sensor MQ2 : ",i," ", sen[i].$key);
         if(sen[i].$key == "values"){
-          this.sensorMQ2 = sen[i].$value;
+          this.sensorMQ2 = ((sen[i].$value-0)/(1024-0)*100);
         }else{
           console.log("Can't get data from sensore");
         }
         return this.sensorMQ2; 
       }   
   }
+
   initialButtonState(btn:any){
     console.log("function initial");
     for(let i=0;i<btn.length;i++){
@@ -231,13 +220,13 @@ export class HomePage {
       this.sButton1 = false;    
       this.bgColor1 = "primary";
       this.icColor1 = "light";
-      //firebaseled.child("d1").set(btn);
+      firebaseled.child("d1").set(btn);
       console.log("btn1");
     }else{
       this.sButton1 = true;
       this.bgColor1 = "light"
       this.icColor1 = "dark";
-      //firebaseled.child("d1").set(btn);
+      firebaseled.child("d1").set(btn);
       console.log("btn1", "else");
     }
     console.log("btn1", "end-if");

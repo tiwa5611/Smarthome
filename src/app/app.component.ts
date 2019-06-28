@@ -5,10 +5,19 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HomePage } from '../pages/home/home';
 @Component({
+  selector: 'app-component',
   templateUrl: 'app.html'
 })
+
 export class MyApp {
   rootPage:any = HomePage;
+
+  
+  thresholdConfig = {
+    '0': {color: 'green'},
+    '40': {color: 'orange'},
+    '75.5': {color: 'red'}
+};
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
     platform.ready().then(() => {

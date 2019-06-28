@@ -9,6 +9,7 @@ import { HomePage } from '../pages/home/home';
 import {AngularFireModule} from 'angularfire2';
 import {AngularFireDatabaseModule} from 'angularfire2/database'
 import { LocalNotifications } from '@ionic-native/local-notifications';
+import { NgxGaugeModule } from 'ngx-gauge';
 
 var config = {
   apiKey: "AIzaSyDmWELUeKL8rasJtpjhZhVJpn-cYQYfptw",
@@ -26,6 +27,7 @@ var config = {
   ],
   imports: [
     BrowserModule,
+    NgxGaugeModule,
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(config),
     AngularFireDatabaseModule

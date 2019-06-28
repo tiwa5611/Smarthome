@@ -1,25 +1,29 @@
 page-home {
     .head{
-       
+        background: #E2FBFD;
     }
     .btn1 {
-        //width: 100px;
+        // width: 50px;
         height: 80px;
         border-radius: 10%;
         padding: 2px;
+        border-style: none;
     }
     .btn2 {
-        //width: 100px;
+        // width: 50px;
         height: 80px;
         border-radius: 10%; 
         padding: 2px;
         padding-top: 2px;
     }
     .btn3 {
-        // width: 100px;
+        // width: 50px;
         height: 80px;
         border-radius: 10%;
         padding: 2px;
     }
-    
+    .toolbar-background {
+        background: linear-gradient(to bottom, #33ccff 0%, #C8F9FE 100%);
+    }
+
 }
